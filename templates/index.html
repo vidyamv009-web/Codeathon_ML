@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Car Price Prediction</title>
+</head>
+<body>
+  <h2>Car Price Prediction</h2>
+  <p>Enter car details and click Predict.</p>
+
+  <form method="post">
+    {% for col in ui_cat %}
+      <p>
+        {{ col }}:
+        <select name="{{ col }}">
+          {% for opt in options[col] %}
+            <option value="{{ opt }}" {% if values[col]|string == opt|string %}selected{% endif %}>
+              {{ opt }}
+            </option>
+          {% endfor %}
+        </select>
+      </p>
+    {% endfor %}
+
+    {% for col in ui_num %}
+      <p>
+        {{ col }}:
+        <input type="number" step="any" name="{{ col }}" value="{{ values[col] }}" required>
+      </p>
+    {% endfor %}
+
+    <p><input type="submit" value="Predict"></p>
+  </form>
+
+  {% if prediction is not none %}
+    <h3>Predicted Price: ${{ "{:,.2f}".format(prediction) }}</h3>
+  {% endif %}
+
+  {% if error %}
+    <p style="color:red;">Error: {{ error }}</p>
+  {% endif %}
+</body>
+</html>
